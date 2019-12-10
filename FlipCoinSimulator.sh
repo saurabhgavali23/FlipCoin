@@ -50,7 +50,7 @@ done
 function main()
 {
 
-read -p "Enter your choice: 1.SingletCoin 2.DoubletCoin " coin
+read -p "Enter your choice: 1.SingletCoin 2.DoubletCoin 3.TripletCoin " coin
 read -p "Enter How Many Times You Want to Flip " number
 
 	case $coin in
@@ -58,6 +58,8 @@ read -p "Enter How Many Times You Want to Flip " number
 		flipCoin 1 $number;;
 	2)
 		flipCoin 2 $number;;
+	3)
+		flipCoin 3 $number;;
 	*)
 		echo "Invalid Option";;
 	esac
