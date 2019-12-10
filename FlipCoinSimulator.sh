@@ -2,26 +2,39 @@
 
 echo "Welcom to FlipCoinSimulator"
 
-head=0
-tail=0
-no=20
-declare -A flipCoin
+function flipCoin(){
 
-for (( i=0;$i<$no;i++ ))
+declare -A combination
+num=$1
+key=""
+for (( i=0;i<30;i++ ))
 do
-	flip=$((RANDOM%2))
+	for ((j=0;j<$num;j++))
+	do
+		flip=$((RANDOM%2))
 
-	if(( flip == 1 ))
+	if (( flip == 1 ))
 	then
-	head=$(($head+1))
-	flipCoin[$head]="H"
+		key=$key"H"
 	else
-	tail=$(($tail+1))
-	flipCoin[$tail]="T"
+		key=$key"T"
 	fi
+	done
+	combination[$key]=$(( ${combination[$key]} + 1 ))
+	key=""
 done
+	percentage ${!combination[@]}
+}
 
-headPer=$(( ($head*100)/$no ))
-tailPer=$(( ($tail*100)/$no ))
+function percentage(){
+num=30
+result=${@}
+echo
+for i in $result
+do
+	j=${combination[$i]}
+	echo "$i	 $(( ($j * 100 ) / $num ))"
+done | sort -k2 -nr
+}
 
-echo ${flipCoin[@]}
+flipCoin 1
