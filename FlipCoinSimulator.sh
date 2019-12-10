@@ -2,13 +2,17 @@
 
 echo "Welcom to FlipCoinSimulator"
 
+number=0
+
 function flipCoin(){
 
-declare -A combination
 num=$1
+number=$2
 key=""
 
-for (( i=0;i<30;i++ ))
+declare -A combination
+
+for (( i=0;i<$number;i++ ))
 do
 
 	for ((j=0;j<$num;j++))
@@ -25,6 +29,7 @@ do
 
 	combination[$key]=$(( ${combination[$key]} + 1 ))
 	key=""
+
 done
 
 	percentage ${!combination[@]}
@@ -38,10 +43,24 @@ echo
 for i in $result
 do
 	j=${combination[$i]}
-	echo "$i	 $(( ($j * 100 ) / 30 ))"
-
-done | sort -k2 -nr
+	echo "$i	 $(( ($j * 100 ) / $number ))"
+done
 }
 
-#Singlet Combination
-flipCoin 1
+function main()
+{
+
+read -p "Enter your choice: 1.SingletCoin 2.DoubletCoin " coin
+read -p "Enter How Many Times You Want to Flip " number
+
+	case $coin in
+	1)
+		flipCoin 1 $number;;
+	2)
+		flipCoin 2 $number;;
+	*)
+		echo "Invalid Option";;
+	esac
+}
+
+main
