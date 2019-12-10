@@ -2,26 +2,65 @@
 
 echo "Welcom to FlipCoinSimulator"
 
-head=0
-tail=0
-no=20
-declare -A flipCoin
+number=0
 
-for (( i=0;$i<$no;i++ ))
+function flipCoin(){
+
+num=$1
+number=$2
+key=""
+
+declare -A combination
+
+for (( i=0;i<$number;i++ ))
 do
-	flip=$((RANDOM%2))
 
-	if(( flip == 1 ))
+	for ((j=0;j<$num;j++))
+	do
+		flip=$((RANDOM%2))
+
+	if (( flip == 1 ))
 	then
-	head=$(($head+1))
-	flipCoin[$head]="H"
+		key=$key"H"
 	else
-	tail=$(($tail+1))
-	flipCoin[$tail]="T"
+		key=$key"T"
 	fi
+	done
+
+	combination[$key]=$(( ${combination[$key]} + 1 ))
+	key=""
+
 done
 
-headPer=$(( ($head*100)/$no ))
-tailPer=$(( ($tail*100)/$no ))
+	percentage ${!combination[@]}
+}
 
-echo ${flipCoin[@]}
+function percentage(){
+
+result=${@}
+echo
+
+for i in $result
+do
+	j=${combination[$i]}
+	echo "$i	 $(( ($j * 100 ) / $number ))"
+done
+}
+
+function main()
+{
+
+read -p "Enter your choice: 1.SingletCoin 2.DoubletCoin " coin
+read -p "Enter How Many Times You Want to Flip " number
+
+	case $coin in
+	1)
+		flipCoin 1 $number;;
+	2)
+		flipCoin 2 $number;;
+	*)
+		echo "Invalid Option";;
+	esac
+}
+
+main
